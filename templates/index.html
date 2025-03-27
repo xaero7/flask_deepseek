@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flask体验 - 与Deepseek的学术唠嗑</title>
+    <link rel="stylesheet" href="/static/github-markdown.min.css" />
+    <link rel="stylesheet" href="/static/github.min.css" />
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="api-info">
+        <img src="/static/hg.png" width="100%" />
+      </div>
+
+      <div class="conversation-container" id="conversation-container">
+        {% for msg in conversation %}
+        <div class="message {{ 'user-message' if msg.role == 'user' else 'assistant-message' }}">
+          <div class="message-header">
+            <span class="message-role">{{ 'B7班大触' if msg.role == 'user' else 'DeepseekV3' }}</span>
+            <span class="message-time">{{ msg.time }}</span>
+          </div>
+          <div
+            class="{{ 'message-content' if msg.role == 'user' else 'markdown-body message-content' }}"
+          >
+            {{ msg.content if msg.role == 'user' else msg.content|safe }}
+          </div>
+        </div>
+        {% else %}
+        <div class="empty-conversation">对话历史为空，请输入消息开始对话...</div>
+        {% endfor %}
+      </div>
+
+      <div class="input-section">
+        <label for="user-message">输入消息:</label>
+        <textarea
+          id="user-message"
+          placeholder="输入消息...后点击发送按钮"
+        ></textarea>
+
+        <div class="button-group">
+          <button id="send-button">发送消息</button>
+          <button id="clear-button" class="secondary-button">清除对话</button>
+        </div>
+        <div id="status" class="status"></div>
+      </div>
+    </div>
+
+    <script src="/static/marked.min.js"></script>
+    <script src="/static/highlight.min.js"></script>
+    <script src="/static/highlight-config.js"></script>
+    <script src="/static/main.js"></script>
+  </body>
+</html>
